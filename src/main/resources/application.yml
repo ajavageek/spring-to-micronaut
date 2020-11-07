@@ -1,0 +1,27 @@
+jpa.default:
+  packages-to-scan:
+    - 'ch.frankel.springtomicronaut'
+  properties.hibernate:
+    hbm2ddl.auto: none
+    show_sql: true
+
+datasources.default:
+  url: jdbc:h2:mem:test
+  driverClassName: org.h2.Driver
+  username: sa
+  dialect: H2
+
+flyway.datasources.default: enabled
+
+endpoints:
+  all.path: /actuator
+  beans:
+    enabled: true
+    sensitive: false
+  health:
+    enabled: true
+    sensitive: false
+  flyway:
+    enabled: true
+    sensitive: false
+

@@ -1,9 +1,10 @@
 package ch.frankel.springtomicronaut
 
-import org.springframework.boot.autoconfigure.SpringBootApplication
-import org.springframework.boot.runApplication
-import org.springframework.data.repository.CrudRepository
-import org.springframework.web.bind.annotation.*
+import io.micronaut.data.annotation.Repository
+import io.micronaut.data.repository.CrudRepository
+import io.micronaut.http.MediaType.TEXT_JSON
+import io.micronaut.http.annotation.*
+import io.micronaut.runtime.Micronaut.build
 import java.time.LocalDate
 import javax.persistence.Entity
 import javax.persistence.Id
@@ -14,21 +15,22 @@ class Person(@Id val id: Long,
              val lastName: String,
              val birthdate: LocalDate? = null)
 
+@Repository
 interface PersonRepository : CrudRepository<Person, Long>
 
-@RestController("/")
+@Controller("/", produces = [TEXT_JSON])
 class PersonController(private val repo: PersonRepository) {
 
-    @GetMapping
+    @Get
     fun getAll(): Iterable<Person> = repo.findAll()
 
-    @GetMapping("/{id}")
+    @Get("/{id}")
     fun getOne(@PathVariable id: Long) = repo.findById(id)
 }
 
-@SpringBootApplication
-class SpringToMicronautApplication
-
 fun main(args: Array<String>) {
-    runApplication<SpringToMicronautApplication>(*args)
+    build()
+        .args(*args)
+        .packages("ch.frankel.springtomicronaut")
+        .start()
 }
