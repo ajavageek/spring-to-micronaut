@@ -1,10 +1,10 @@
 package ch.frankel.springtomicronaut
 
-import org.springframework.boot.autoconfigure.SpringBootApplication
-import org.springframework.boot.runApplication
+import io.quarkus.runtime.Quarkus
 import org.springframework.data.repository.CrudRepository
 import org.springframework.web.bind.annotation.*
 import java.time.LocalDate
+import java.util.*
 import javax.persistence.Entity
 import javax.persistence.Id
 
@@ -23,12 +23,9 @@ class PersonController(private val repo: PersonRepository) {
     fun getAll(): Iterable<Person> = repo.findAll()
 
     @GetMapping("/{id}")
-    fun getOne(@PathVariable id: Long) = repo.findById(id)
+    fun getOne(@PathVariable("id") id: Long): Optional<Person> = repo.findById(id)
 }
 
-@SpringBootApplication
-class SpringToMicronautApplication
-
 fun main(args: Array<String>) {
-    runApplication<SpringToMicronautApplication>(*args)
+    Quarkus.run(*args)
 }
