@@ -5,11 +5,11 @@ import org.springframework.data.repository.CrudRepository
 import org.springframework.web.bind.annotation.*
 import java.time.LocalDate
 import java.util.*
-import javax.persistence.Entity
-import javax.persistence.Id
+import javax.persistence.*
+import javax.persistence.GenerationType.IDENTITY
 
 @Entity
-class Person(@Id val id: Long,
+class Person(@Id @GeneratedValue(strategy = IDENTITY) val id: Long,
              val firstName: String,
              val lastName: String,
              val birthdate: LocalDate? = null)
